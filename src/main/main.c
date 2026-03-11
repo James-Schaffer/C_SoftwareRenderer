@@ -19,20 +19,18 @@
 // z -back/front+
 
 // ========== DEFINITIONS ==========
-
-const double PI = 3.1415926535897932384;
-const double PI_2 = 1.5707963267948966192;
+#define PI	3.1415926535897932384
+#define PI_2	1.5707963267948966192
 
 #define DEG2RAD(x) ((x) * (PI / 180.0))
 
-#define SDL_WINDOW_WIDTH	1920U
-#define SDL_WINDOW_HEIGHT	1080U
+#define SDL_WINDOW_WIDTH 1920U
+#define SDL_WINDOW_HEIGHT 1080U
 
-#define CAM_FOV				(PI/2) // 90 degrees
-#define CAM_CLIP_MIN		0.5
+#define CAM_CLIP_MIN 0.5
 
-#define MAX_VERTEX			10000U
-#define MAX_FACES			10000U
+#define MAX_VERTEX 10000U
+#define MAX_FACES  10000U
 
 // ========== STRUCTS ==========
 
@@ -41,6 +39,7 @@ typedef struct  {
 	v3 rotation;
 	v3 defNormal;
 	v3 defUp;
+	double fov;
 } CamState;
 typedef struct {
 	v3 position;
@@ -79,7 +78,7 @@ bool qDown = false;
 
 // ========== CAMERA TRANSFORM ==========
 
-CamState cam = {{0, -2, 0}, {0,0,0}, {0,1,0}, {0,0,1}};
+CamState cam = {{0, -2, 0}, {0,0,0}, {0,1,0}, {0,0,1}, PI_2};
 
 // Other
 
@@ -112,7 +111,7 @@ CamProjectionInfo getCamProjectionInfo(const CamState* camera) {
 	ret.rightV = normalize(crossProduct(ret.upV, ret.normalV));
 
 	// fov scale
-	ret.fov_scale = SDL_WINDOW_WIDTH / (2 * tan(CAM_FOV / 2));
+	ret.fov_scale = SDL_WINDOW_WIDTH / (2 * tan(camera->fov / 2));
 
 	return ret;
 }
@@ -448,6 +447,9 @@ void manageMouseMotion(const SDL_MouseMotionEvent *e) {
 	}
 }
 
+void manageMouseScroll(SDL_MouseWheelEvent * wheel) {
+	cam.fov += wheel->y * -0.1;
+}
 
 
 int main(void) {
@@ -512,6 +514,9 @@ int main(void) {
 				case SDL_EVENT_MOUSE_MOTION:
 					manageMouseMotion(&e.motion);
 					break;
+				case SDL_EVENT_MOUSE_WHEEL:
+					manageMouseScroll(&e.wheel);
+					break;
 				default:
 					//printf("Event\n");
 					break;
@@ -520,6 +525,7 @@ int main(void) {
 
 		update(deltaTime);
 		render(renderer, meshes[0]);
+
 	}
 
 	// Cleanup

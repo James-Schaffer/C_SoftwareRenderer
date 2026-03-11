@@ -24,6 +24,6 @@ void initWindow(Window window) {
 	window->window = SDL_CreateWindow(
 		"SimpleSoftwareRenderer",
 		window->width, window->height,
-		SDL_WINDOW_RESIZABLE
+		SDL_WINDOW_FULLSCREEN
 	);
 }
