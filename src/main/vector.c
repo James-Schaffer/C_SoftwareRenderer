@@ -52,6 +52,12 @@ v3 normalize(const v3 v) {
 	return v3Scale(v, 1.0 / len);
 }
 
+v2 v2Sub(const v2 a, const v2 b) {
+	v2 r;
+	r.x = a.x - b.x;
+	r.y = a.y - b.y;
+	return r;
+}
 v2 scalev2(const v2 a, const double s) {
 	v2 r;
 	r.x = a.x * s;
@@ -62,6 +68,10 @@ v2 normalizev2(const v2 v) {
 	double len = sqrt( (v.x*v.x) + (v.y*v.y) );
 	if (len == 0.0) return v;
 	return scalev2(v, 1.0 / len);
+}
+
+float crossProduct_v2(const v2 a, const v2 b) {
+	return (float) ((a.x * b.y) - (a.y * b.x));
 }
 
 // ========== TRANSFORM FUNCTIONS ==========

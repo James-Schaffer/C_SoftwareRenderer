@@ -50,8 +50,10 @@ v3 crossProduct(v3 a, v3 b);
 double v3Len(v3 a);
 v3 normalize(v3 v);
 
+v2 v2Sub(v2 a, v2 b);
 v2 scalev2(v2 a, double s);
 v2 normalizev2(v2 v);
+float crossProduct_v2(v2 a, v2 b);
 
 v3 transformV3(const v3* v, const Transform* t);
 
