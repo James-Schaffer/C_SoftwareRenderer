@@ -344,10 +344,18 @@ void renderScene(SDL_Renderer* renderer, SDL_Surface* surface, float* zbuf, int 
 			double diffuse = clampd(dotProduct(*normal, viewDir) * -1, 0, 1);
 
 			// get ambient
-			v3 ambient = {1.0, 1.0, 1.0};
+			//v3 ambient = {1.0, 1.0, 1.0};
+			v3 ambient = *normal;
+
+			ambient = (v3){
+				normal->x * 0.5 + 0.5,
+				normal->y * 0.5 + 0.5,
+				normal->z * 0.5 + 0.5
+			};
 
 			// get color
-			ambient = v3Scale(ambient, diffuse * 255.0);
+			//ambient = v3Scale(ambient, diffuse * 255.0);
+			ambient = v3Scale(ambient, 255.0);
 
 			// project points
 			projectPoints3DtoScreen(points, projectedPoints, 3, &camInfo);
